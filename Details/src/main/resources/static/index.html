@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>welcome</title>
+<link rel="stylesheet" href="/NewFile.css">
+</head>
+<body>
+<h1>Welcome to My API Page</h1>
+    <h1 id="wel"></h1>
+    <script>
+        // Use JavaScript to fetch data from the API and display it on the page
+        fetch('/hello')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('wel').innerText = data.message;
+            });
+    </script>
+</body>
+</html>

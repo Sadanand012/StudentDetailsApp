@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Students</title>
+<link rel="stylesheet" href="/css/NewFile.css">
+</head>
+<body>
+	<h1>Students within Mark Range</h1>
+	<div class="container">
+		<form id="marksRangeForm">
+        <label for="startMark">Start Mark:</label>
+        	<input type="number" id="startMark" name="startMark" required><br><br>
+
+        	<label for="endMark">End Mark:</label>
+        	<input type="number" id="endMark" name="endMark" required><br><br>
+
+        	<button type="submit" style="background-color:tomato;">Get</button>
+    	</form>
+    	
+    	<table>
+        <thead>
+            <tr>
+            	<th>Roll Number </th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Marks</th>
+            </tr>
+        </thead>
+        <tbody id="studentsList"></tbody>
+    </table>
+	</div>
+	
+	
+    <script>
+        document.getElementById("marksRangeForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Retrieve form data
+            const formData = new FormData(event.target);
+
+            // Get start mark and end mark values
+            const startMark = parseFloat(formData.get("startMark"));
+            const endMark = parseFloat(formData.get("endMark"));
+
+            // Fetch students within the mark range
+            fetch(`/studentsrange?startMark=${startMark}&endMark=${endMark}`)
+                .then(response => response.json())
+                .then(students => {
+                    // Display the list of students
+                    const studentsListElement = document.getElementById("studentsList");
+                    studentsListElement.innerHTML = "";
+                    if (students.length > 0) {
+                        students.forEach(student => {
+                            const studentElement = document.createElement("p");
+                            studentElement.textContent = `${student.roll} ${student.name} ${student.email} (${student.marks})`;
+                            studentsListElement.appendChild(studentElement);
+                        });
+                    } else {
+                        studentsListElement.textContent = "No students found within the mark range.";
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert('An error occurred while fetching student data.');
+                });
+        });
+    </script>
+</body>
+</html>

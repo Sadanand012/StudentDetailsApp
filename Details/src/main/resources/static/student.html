@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Create Student</title>
+<link rel="stylesheet" href="/NewFile.css">
+</head>
+<body>
+<h1>Create Student Form</h1>
+
+    <div class="container">
+    <form id="createStudentForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="marks">Marks:</label>
+        <input type="number" id="marks" name="marks" required><br><br>
+        
+        <button type="submit">Create</button>
+    </form>
+    
+    </div>
+    <script>
+        document.getElementById("createStudentForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Retrieve form data
+            const formData = new FormData(event.target);
+
+            // Create a JSON object from form data
+            const student = {};
+            formData.forEach((value, key) => {
+                student[key] = value;
+            });
+
+            // Send the student data to the API
+            fetch('/student ', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(student)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Student created successfully!");
+                // Optionally, redirect to another page or update the UI
+            })
+            .catch(error => {
+                alert("An error occurred while creating the student.");
+                console.error(error);
+            });
+        });
+    </script>
+</body>
+</html>

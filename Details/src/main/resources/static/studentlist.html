@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>List of Students</title>
+<link rel="stylesheet" href="/NewFile.css">
+</head>
+<body>
+	<h1>List of Students</h1>
+    <table>
+        <thead>
+            <tr>
+            	<th>Roll Number </th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Email</th>
+                <th>Marks</th>
+            </tr>
+        </thead>
+        <tbody id="student"></tbody>
+    </table>
+
+	<script>
+        // Fetch student data from the API and populate the table
+        fetch('/studentlists')
+            .then(response => response.json())
+            .then(students => {
+                const tableBody = document.getElementById('student');
+                students.forEach(student => {
+                    const row = tableBody.insertRow();
+                    row.insertCell().textContent = student.roll;
+                    row.insertCell().textContent = student.name;
+                    row.insertCell().textContent = student.age;
+                    row.insertCell().textContent = student.email;
+                    row.insertCell().textContent = student.marks;
+                });
+            })
+            .catch(error => {
+                console.error(error);
+                alert('An error occurred while fetching student data.');
+            });
+    </script>
+</body>
+</html>
